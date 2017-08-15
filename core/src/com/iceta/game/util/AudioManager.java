@@ -24,7 +24,7 @@ public class AudioManager {
     private Music playingMusic;
     private Sound currentSound;
     private SequenceAction readFeedback, readBlocks;
-    private float defaultVolSound = 0.6f;
+    private float defaultVolSound = 1.0f;
     private Actor reader;
     private Stage stage;
     private float readBlockDuration = 0.5f;
@@ -155,7 +155,7 @@ public class AudioManager {
     public void readFeedback( int numToBuild){
         Gdx.app.log(TAG,"readFeedback "+numToBuild);
         readFeedback.reset();
-        readFeedback.addAction(delay(0.2f));
+        readFeedback.addAction(delay(1.0f));
         addToReadFeedback(numToBuild);
         reader.addAction(readFeedback);
     }

@@ -97,7 +97,6 @@ public class CvBlocksManager {
             }
            // Gdx.app.log(TAG, "blocks detected " + currentBlocks.size() + " new ids " + Arrays.toString(newIds.toArray()) + " old: " + Arrays.toString(oldIds.toArray()));
             Gdx.app.log(TAG, "now detected vals "+Arrays.toString(nowDetectedVals.toArray()));
-            //TODO get the sum of the blocks
             detectionReady = false;
         }
     }
@@ -107,12 +106,7 @@ public class CvBlocksManager {
     }
 
     public ArrayList<Integer> getNewDetectedVals(){
-        ArrayList<Integer> test = new ArrayList<Integer>();
-        int randy = MathUtils.random(1,3);
-        test.add(randy);
-        Gdx.app.log(TAG,"NEW DETECTED "+randy);
-        return test;
-        //return new ArrayList(nowDetectedVals);
+        return new ArrayList(nowDetectedVals);
     }
 
 

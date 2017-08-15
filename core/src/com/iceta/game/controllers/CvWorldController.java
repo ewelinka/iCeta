@@ -59,7 +59,6 @@ public class CvWorldController extends InputAdapter {
 
         /// detection-related start
         if (game.hasNewFrame()) {
-            Gdx.app.log(TAG, " framerateeee" + Gdx.graphics.getFramesPerSecond());
             cvBlocksManager.updateDetected();
         }
         if (cvBlocksManager.isDetectionReady()) {
@@ -67,13 +66,14 @@ public class CvWorldController extends InputAdapter {
         }
 
         if(isTimeToStartNewLoop()){
-            Gdx.app.log(TAG,"new loop!");
+            Gdx.app.log(TAG,"new loop! with random number "+randomNumber);
             if(lastAnswerRight){
                 AudioManager.instance.play(Assets.instance.sounds.yuju);
                 randomNumber = getNewNumber();
                 timeToWait = randomNumber + Constants.WAIT_AFTER_KNOCK;
                 timePassed = 0;
                 AudioManager.instance.readFeedback(randomNumber);
+                lastAnswerRight = false;
 
             }else {
                 ArrayList<Integer> nowDetected = cvBlocksManager.getNewDetectedVals(); // to know the blocks on the table
@@ -85,7 +85,12 @@ public class CvWorldController extends InputAdapter {
                     timeToWait = sum;
                 } else
                     timeToWait = randomNumber;
-                timeToWait += Constants.WAIT_AFTER_KNOCK;
+
+                if(sum == randomNumber){
+                    Gdx.app.log(TAG,"iguality!!! "+sum+" "+randomNumber);
+                    lastAnswerRight = true;
+                }else
+                    timeToWait += Constants.WAIT_AFTER_KNOCK;
                 timePassed = 0;
 
                 AudioManager.instance.readFeedbackAndBlocks(nowDetected, randomNumber);
@@ -95,7 +100,7 @@ public class CvWorldController extends InputAdapter {
     }
 
     private int getNewNumber(){
-        return MathUtils.random(10);
+        return MathUtils.random(1,5);
 
     }
 
