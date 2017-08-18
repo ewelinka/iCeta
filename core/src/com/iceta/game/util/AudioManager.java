@@ -34,10 +34,10 @@ public class AudioManager {
     public void setStage(Stage stage){
         Gdx.app.log(TAG,"set stage in AM");
         this.stage = stage;
-        reader = new Actor();
+        reader = new Actor(); // ractor that reads everything
         stage.addActor(reader);
-        readFeedback = new SequenceAction();
-        readBlocks = new SequenceAction();
+        readFeedback = new SequenceAction(); // for feedback reading
+        readBlocks = new SequenceAction(); // for detected blocks reading
     }
 
     public void play (Sound sound) {
@@ -59,7 +59,7 @@ public class AudioManager {
         playingMusic = music;
 
         music.setLooping(true);
-        music.setVolume(0.15f);
+        music.setVolume(0.05f);
         music.play();
 
     }
@@ -99,7 +99,7 @@ public class AudioManager {
                         playWithoutInterruption(Assets.instance.sounds.oneDo);
                     }
                 }));
-                readBlocks.addAction(delay(readBlockDuration));
+                readBlocks.addAction(delay(readBlockDuration)); // we wait 0.5s because sound files with "do", "re" and "mi" have 0.5s
                 break;
             case 2:
                 readBlocks.addAction(run(new Runnable() {
@@ -122,7 +122,7 @@ public class AudioManager {
     }
 
     public void addToReadFeedback (int nr) {
-        for(int i = 0; i<nr;i++){
+        for(int i = 0; i<nr;i++){ // if the number is 5 we have to knock 5 times
             readFeedback.addAction(run(new Runnable() {
                 public void run() {
                     playWithoutInterruption(Assets.instance.sounds.puck);
@@ -133,26 +133,25 @@ public class AudioManager {
     }
 
     public void readFeedbackAndBlocks(ArrayList<Integer> toReadNums, int numToBuild){
-
         readBlocks.reset();
         readBlocks.addAction(delay(0.2f));
-        for(int i = 0; i<toReadNums.size();i++) {
-            int val = toReadNums.get(i);
+        for(int i = 0; i<toReadNums.size();i++) { // if we have detected block 3 and block 2, we have to read 3 times "mi" and 2 time "re"
+            int val = toReadNums.get(i); // val will be 3 and than 2
             for(int j = 0; j<val;j++) {
-                addToReadBlock(val);
+                addToReadBlock(val); // one single lecture
             }
         }
 
         readFeedback.reset();
         readFeedback.addAction(delay(0.2f));
-        addToReadFeedback(numToBuild);
+        addToReadFeedback(numToBuild); // to generate feedback
 
 
-        reader.addAction(parallel(readBlocks,readFeedback));
+        reader.addAction(parallel(readBlocks,readFeedback)); // we read feedback and the blocks in parallel
 
     }
 
-    public void readFeedback( int numToBuild){
+    public void readFeedback( int numToBuild){ // we use this action at the beginning of new screen, we read feedback without blocks
         Gdx.app.log(TAG,"readFeedback "+numToBuild);
         readFeedback.reset();
         readFeedback.addAction(delay(1.0f));

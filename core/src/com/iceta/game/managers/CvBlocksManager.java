@@ -39,7 +39,6 @@ public class CvBlocksManager {
         init();
     }
 
-
     private void init(){
         Rect detectionZone = new Rect((640-480),0,480,480);
         if((Gdx.app.getType() == Application.ApplicationType.Android)) {
@@ -78,10 +77,9 @@ public class CvBlocksManager {
     }
 
     public void analyseDetected(){
-        //Set<Block> currentBlocks = topCodeDetector.detectBlocks(((CetaGame)game).getAndBlockLastFrame());
         if(detectionReady) {
             if(results.size() > 0) {
-                currentBlocks = results.get(0);
+                currentBlocks = results.get(0); //here we have our set of detected blocks
             }
             else {
                 Gdx.app.error(TAG," very very wrong -> empty result!");
@@ -90,12 +88,8 @@ public class CvBlocksManager {
             nowDetectedVals.clear();
 
             for (Block i : currentBlocks) {
-                // Gdx.app.log(TAG, " orientation (radians) " + i.getOrientation() + " center " + i.getCenter() + " type " + i.getType() + " id " + i.getId());
-//                newIds.add(i.getId());
-//                newDetectedCVBlocks.add(i);
-                nowDetectedVals.add(i.getValue());
+                nowDetectedVals.add(i.getValue()); // we fill the empty array with detected values
             }
-           // Gdx.app.log(TAG, "blocks detected " + currentBlocks.size() + " new ids " + Arrays.toString(newIds.toArray()) + " old: " + Arrays.toString(oldIds.toArray()));
             Gdx.app.log(TAG, "now detected vals "+Arrays.toString(nowDetectedVals.toArray()));
             detectionReady = false;
         }
