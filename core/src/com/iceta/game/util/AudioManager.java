@@ -121,6 +121,55 @@ public class AudioManager {
         }
     }
 
+    public void readSingleKnock(int whichKnock){
+        final Sound whichSound;
+        switch(whichKnock) {
+            case 1:
+                Gdx.app.log(TAG,"one!");
+                whichSound = Assets.instance.sounds.d1;
+                break;
+            case 2:
+                Gdx.app.log(TAG,"two!");
+                whichSound = Assets.instance.sounds.d2;
+                break;
+            case 3:
+                whichSound = Assets.instance.sounds.d3;
+                break;
+            case 4:
+                whichSound = Assets.instance.sounds.d4;
+                break;
+            case 5:
+                whichSound = Assets.instance.sounds.d5;
+                break;
+            case 6:
+                whichSound = Assets.instance.sounds.d6;
+                break;
+            case 7:
+                whichSound = Assets.instance.sounds.d7;
+                break;
+            case 8:
+                whichSound = Assets.instance.sounds.d8;
+                break;
+            case 9:
+                whichSound = Assets.instance.sounds.d9;
+                break;
+            case 10:
+                whichSound = Assets.instance.sounds.d10;
+                break;
+            default:
+                whichSound = Assets.instance.sounds.d1;
+                break;
+
+        }
+        readFeedback.addAction(run(new Runnable() {
+            public void run() {
+                playWithoutInterruption(whichSound);
+            }
+        }));
+        readFeedback.addAction(delay(readBlockDuration));
+
+    }
+
     public void addToReadFeedback (int nr) {
         for(int i = 0; i<nr;i++){ // if the number is 5 we have to knock 5 times
             readFeedback.addAction(run(new Runnable() {
@@ -129,6 +178,12 @@ public class AudioManager {
                 }
             }));
             readFeedback.addAction(delay(readBlockDuration));
+        }
+    }
+
+    public void addToReadFeedbackInSpace (int nr) {
+        for(int i = 0; i<nr;i++){ // if the number is 5 we have to knock 5 times
+            readSingleKnock(i+1); // we start with 1
         }
     }
 
@@ -144,7 +199,7 @@ public class AudioManager {
 
         readFeedback.reset();
         readFeedback.addAction(delay(0.2f));
-        addToReadFeedback(numToBuild); // to generate feedback
+        addToReadFeedbackInSpace(numToBuild); // to generate feedback
 
 
         reader.addAction(parallel(readBlocks,readFeedback)); // we read feedback and the blocks in parallel
@@ -155,7 +210,7 @@ public class AudioManager {
         Gdx.app.log(TAG,"readFeedback "+numToBuild);
         readFeedback.reset();
         readFeedback.addAction(delay(1.0f));
-        addToReadFeedback(numToBuild);
+        addToReadFeedbackInSpace(numToBuild);
         reader.addAction(readFeedback);
     }
 }
